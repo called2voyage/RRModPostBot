@@ -37,4 +37,10 @@ if datetime.now(tz=timezone.utc).weekday() == 0 and datetime.now(tz=timezone.utc
 Or maybe you're curious about joining a religion with certain qualities but don't know if it exists?
 Once a week, we provide an opportunity here for you to ask other users what religion fits you.
 '''
-    subreddit.submit(title, selftext=selftext)
+    submission = subreddit.submit(title, selftext=selftext)
+    submission.mod.distinguish(how="yes")
+    post_history.append(datetime.now(tz=timezone.utc).strftime('%Y-%m-%d'))
+
+with open("post_history.txt", "w") as f:
+    for timestamp in post_history:
+        f.write(timestamp + "\n")
