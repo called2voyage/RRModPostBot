@@ -15,7 +15,7 @@
 
 import praw
 import os
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 reddit = praw.Reddit('bot3')
 print(reddit.user.me())
@@ -37,8 +37,12 @@ if datetime.now(tz=timezone.utc).weekday() == 0 and datetime.now(tz=timezone.utc
 Or maybe you're curious about joining a religion with certain qualities but don't know if it exists?
 Once a week, we provide an opportunity here for you to ask other users what religion fits you.
 '''
-    submission = subreddit.submit(title, selftext=selftext)
+    today = datetime.now(tz=timezone.utc)
+    end_of_week =  datetime.now(tz=timezone.utc) + timedelta(days=6)
+    link_flair_text = today.strftime("%b %d") + ' - ' + end_of_week.strftime("%b %d")
+    submission = subreddit.submit(title, selftext=selftext, link_flair_text=link_flair_text)
     submission.mod.distinguish(how="yes")
+    submission.mod.sticky(state=True, bottom=True)
     post_history.append(datetime.now(tz=timezone.utc).strftime('%Y-%m-%d'))
 
 with open("post_history.txt", "w") as f:
